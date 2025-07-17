@@ -6,8 +6,13 @@ dotenv.config();
 
 const app = express();
 
-await connectDB()
+connectDB()
 .then(() => {
+    app.on('error', (error) => {
+        console.error('Error occurred:', error);
+        throw error;
+    });
+    
     app.listen(process.env.PORT || 3000, () => {
         console.log(`Server is running on port ${process.env.PORT || 3000}`);
     });
