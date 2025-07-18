@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.conroller.js";
+import { loginUser, logoutUser, refreshAccessToken, registerUser } from "../controllers/user.conroller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import multer from "multer";
+import { jwtVerify } from "../middlewares/auth.middleware.js";
 
 const userRouter = Router();
 
@@ -12,6 +13,12 @@ userRouter.route("/register").post(
     ]), 
     registerUser
     );
+
+userRouter.route("/login").post(loginUser)
+
+// secure routes
+userRouter.route("/logout").post(jwtVerify, logoutUser)
+userRouter.route("/refresh-token").post(refreshAccessToken)
 
 // const uploadMiddleware = (req, res, next) => {
 //     upload.fields([
